@@ -130,9 +130,9 @@ class GER
       ])
     )
     .spread( ( neighbourhood, similarities, recommendations ) =>
-   ###   console.log(neighbourhood)
-      console.log(similarities)
-      console.log(recommendations)###
+      ###   console.log(neighbourhood)
+         console.log(similarities)
+         console.log(recommendations)###
       bb.all([
         neighbourhood,
         similarities,
