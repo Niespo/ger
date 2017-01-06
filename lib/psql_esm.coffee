@@ -99,11 +99,11 @@ class PSQLEventStoreManager
   find_events: (namespace, options = {}) ->
 
     options = _.defaults(options,
-      size: 50
+      events_size: 50
       page: 0
       current_datetime: new Date()
     )
-
+    console.log(options)
     options.expires_after = moment(options.current_datetime).add(options.time_until_expiry, 'seconds').format() if options.time_until_expiry
 
     q = @_knex("#{namespace}.events")
@@ -113,7 +113,7 @@ class PSQLEventStoreManager
     .where('created_at', '<=', options.current_datetime)
     .orderBy('created_at', 'desc')
     .groupBy(['person', "action", "thing"])
-    .limit(options.size)
+    .limit(options.events_size)
     .offset(options.size*options.page)
 
     q.where('expires_at', '>', options.expires_after) if options.expires_after
@@ -366,6 +366,8 @@ class PSQLEventStoreManager
     for action, weight of actions
       #making it easier to work with actions
       action_list.push {action: action, weight, weight}
+
+    console.log(action_list)
 
     a_values = []
     al_values = []

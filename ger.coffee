@@ -130,6 +130,9 @@ class GER
       ])
     )
     .spread( ( neighbourhood, similarities, recommendations ) =>
+   ###   console.log(neighbourhood)
+      console.log(similarities)
+      console.log(recommendations)###
       bb.all([
         neighbourhood,
         similarities,
@@ -187,6 +190,7 @@ class GER
       similarity_search_size: 100
       event_decay_rate: 1
       neighbourhood_size: 25,
+      events_size: 100,
       recommendations_per_neighbour: 5
       filter_previous_actions: [],
       time_until_expiry: 0
@@ -224,9 +228,9 @@ class GER
     actions = configuration.actions
 
     #first a check or two
-    @find_events(namespace, actions: Object.keys(actions), person: person, current_datetime: configuration.current_datetime, size: 100)
+    @find_events(namespace, actions: Object.keys(actions), person: person, current_datetime: configuration.current_datetime, configuration.events_size)
     .then( (events) =>
-
+      console.log('Found events: ', events.length)
       return {recommendations: [], confidence: 0} if events.length < configuration.minimum_history_required
 
       return @generate_recommendations_for_person(namespace, person, actions, events.length, configuration)
